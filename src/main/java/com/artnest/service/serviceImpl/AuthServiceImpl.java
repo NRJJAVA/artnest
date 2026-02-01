@@ -15,14 +15,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-         @Autowired
-        private AuthenticationManager authenticationManager;
 
-        @Autowired
-        private JwtTokenUtil jwtTokenUtil;
+        private final AuthenticationManager authenticationManager;
 
-        @Autowired
-        private CustomUserDetailsService userDetailsService;
+        private final JwtTokenUtil jwtTokenUtil;
+
+        private final CustomUserDetailsService userDetailsService;
+
+    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, CustomUserDetailsService userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     public LoginResponse login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
