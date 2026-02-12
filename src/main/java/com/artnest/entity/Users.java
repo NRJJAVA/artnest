@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 @Setter
@@ -26,8 +29,9 @@ public class Users extends BaseEntity {
 
     private String phone;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserRoles> roles = new HashSet<>();
+
 
     private String profileImageUrl;
 
