@@ -30,7 +30,6 @@ public class AuthServiceImpl implements AuthService {
     }
     public LoginResponse login(LoginRequest request) {
 
-        System.out.println("1");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmailOrPhone(),
@@ -38,14 +37,9 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
-        System.out.println("2");
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
 
         String token = jwtTokenUtil.generateToken(principal);
-
-        List<String> roles = principal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
 
         return new LoginResponse(token);
 
