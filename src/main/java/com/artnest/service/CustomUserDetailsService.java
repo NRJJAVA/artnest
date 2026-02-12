@@ -1,5 +1,6 @@
 package com.artnest.service;
 
+import com.artnest.config.CustomUserPrincipal;
 import com.artnest.entity.Users;
 import com.artnest.repository.UsersRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,13 +20,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String emailOrPhone) throws UsernameNotFoundException {
+
         Users user = usersRepository.findByEmailOrPhone(emailOrPhone, emailOrPhone)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                List.of(new SimpleGrantedAuthority(user.getRole().name()))
-        );
+        List<SimpleGrantedAuthority> authorities =
+                user.getRoles().stream()
+                        .map(userRole -> new SimpleGrantedAuthority(userRole.getRole().name()))
+                        .toList();
+
+        return new CustomUserPrincipal(user, authorities);
     }
 }

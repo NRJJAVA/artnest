@@ -1,5 +1,6 @@
 package com.artnest.util;
 
+import com.artnest.config.CustomUserPrincipal;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -24,14 +25,19 @@ public class JwtTokenUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
+
+        CustomUserPrincipal principal = (CustomUserPrincipal) userDetails;
+
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .claim("roles", userDetails.getAuthorities())
+                .setSubject(principal.getUsername())
+                .claim("userId", principal.getId())
+                .claim("roles", principal.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
+
 
     public String extractUsername(String token) {
         return Jwts.parserBuilder()

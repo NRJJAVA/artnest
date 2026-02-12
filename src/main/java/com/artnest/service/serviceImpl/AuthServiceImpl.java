@@ -1,5 +1,6 @@
 package com.artnest.service.serviceImpl;
 
+import com.artnest.config.CustomUserPrincipal;
 import com.artnest.dto.LoginRequest;
 import com.artnest.dto.LoginResponse;
 import com.artnest.service.AuthService;
@@ -9,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -20,15 +24,13 @@ public class AuthServiceImpl implements AuthService {
 
         private final JwtTokenUtil jwtTokenUtil;
 
-        private final CustomUserDetailsService userDetailsService;
-
     public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, CustomUserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
-        this.userDetailsService = userDetailsService;
     }
-
     public LoginResponse login(LoginRequest request) {
+
+        System.out.println("1");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmailOrPhone(),
@@ -36,12 +38,17 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmailOrPhone());
+        System.out.println("2");
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
 
-        // Generate JWT token
-        String token = jwtTokenUtil.generateToken(userDetails);
+        String token = jwtTokenUtil.generateToken(principal);
+
+        List<String> roles = principal.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
 
         return new LoginResponse(token);
+
     }
 
 }
