@@ -2,14 +2,14 @@ package com.artnest.dto;
 
 import lombok.*;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiResponse<T> {
-
-    private boolean success;
+public class ApiError {
+    private String code;
     private String message;
-    private T data;
+    private Map<String, ?> details;
 }
-

@@ -14,18 +14,42 @@ import java.time.LocalDateTime;
 public class Booking extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Users customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artist_id")
+    @JoinColumn(name = "artist_id", nullable = false)
     private Users artist;
 
+    @Column(nullable = false)
     private LocalDateTime bookingDate;
+
+    private LocalDateTime bookingEndDate;
+
+    private Integer durationMinutes;
+
+    @Column(nullable = false)
+    private String artType;
+
+    @Column(nullable = false)
     private String location;
+
+    @Column(nullable = false)
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private BookingStatus status;
+
+    @PrePersist
+    @PreUpdate
+    public void applyDefaults() {
+        if (durationMinutes == null || durationMinutes <= 0) {
+            durationMinutes = 60;
+        }
+        if (bookingDate != null && bookingEndDate == null) {
+            bookingEndDate = bookingDate.plusMinutes(durationMinutes);
+        }
+    }
 }
 

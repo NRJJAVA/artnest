@@ -27,13 +27,33 @@ public class Users extends BaseEntity {
 
     private String countryCode;
 
+    @Column(unique = true, nullable = false)
     private String phone;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRoles> roles = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole defaultMode = UserRole.CUSTOMER;
+
+    @Column(nullable = false)
+    private Boolean onboardingCompleted = false;
+
+    @Column(columnDefinition = "TEXT")
+    private String preferences;
 
     private String profileImageUrl;
+
+    @PrePersist
+    public void applyDefaults() {
+        if (defaultMode == null) {
+            defaultMode = UserRole.CUSTOMER;
+        }
+        if (onboardingCompleted == null) {
+            onboardingCompleted = false;
+        }
+    }
 
 }
 

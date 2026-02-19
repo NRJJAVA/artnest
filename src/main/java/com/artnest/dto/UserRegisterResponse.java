@@ -15,5 +15,7 @@ public class UserRegisterResponse {
     private String phone;
     private String countryCode;
     private List<String> roles;
+    private UserRole defaultMode;
+    private Boolean onboardingCompleted;
 }
 

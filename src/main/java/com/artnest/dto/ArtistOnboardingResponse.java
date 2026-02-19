@@ -1,22 +1,22 @@
 package com.artnest.dto;
 
-
 import com.artnest.enums.UserRole;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-public class LoginResponse {
-    private String token;
+@AllArgsConstructor
+public class ArtistOnboardingResponse {
+    private Long userId;
+    private Long artistProfileId;
     private List<String> roles;
     private UserRole defaultMode;
     private Boolean onboardingCompleted;
-    private Boolean hasArtistProfile;
     private Boolean artistProfileCompleted;
 }
-

@@ -1,17 +1,18 @@
 package com.artnest.dto;
 
-
-import lombok.*;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class UsersRegisterRequest {
+@AllArgsConstructor
+public class ArtistRegisterRequest {
 
     @NotBlank(message = "Full name is required")
     private String fullName;
@@ -36,5 +37,16 @@ public class UsersRegisterRequest {
             message = "Mobile number must be a valid 10-digit Indian number"
     )
     private String phone;
-}
 
+    private String bio;
+
+    private String serviceCategory;
+
+    private String location;
+
+    private Double hourlyRate;
+
+    private Integer experienceInYears;
+
+    private String portfolioUrl;
+}
