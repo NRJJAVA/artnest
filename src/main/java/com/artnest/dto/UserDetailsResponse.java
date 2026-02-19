@@ -1,5 +1,6 @@
 package com.artnest.dto;
 
+import com.artnest.enums.Gender;
 import com.artnest.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,8 @@ public class UserDetailsResponse {
     private String name;
     private String email;
     private String mobile;
+    private String address;
+    private Gender gender;
     private List<String> roles;
     private UserRole defaultMode;
     private Boolean onboardingCompleted;

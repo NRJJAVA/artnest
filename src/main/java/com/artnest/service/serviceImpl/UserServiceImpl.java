@@ -51,6 +51,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhone(request.getPhone());
         user.setCountryCode(request.getCountryCode());
+        user.setAddress(normalizeOptionalText(request.getAddress()));
+        user.setGender(request.getGender());
         user.setDefaultMode(UserRole.CUSTOMER);
         user.setOnboardingCompleted(false);
 
@@ -67,6 +69,8 @@ public class UserServiceImpl implements UserService {
         response.setEmail(savedUser.getEmail());
         response.setPhone(savedUser.getPhone());
         response.setCountryCode(savedUser.getCountryCode());
+        response.setAddress(savedUser.getAddress());
+        response.setGender(savedUser.getGender());
         response.setRoles(getRoleNames(savedUser));
         response.setDefaultMode(savedUser.getDefaultMode());
         response.setOnboardingCompleted(savedUser.getOnboardingCompleted());
@@ -128,6 +132,8 @@ public class UserServiceImpl implements UserService {
                 user.getFullName(),
                 user.getEmail(),
                 user.getCountryCode() + " " + user.getPhone(),
+                user.getAddress(),
+                user.getGender(),
                 getRoleNames(user),
                 user.getDefaultMode(),
                 user.getOnboardingCompleted(),
@@ -179,5 +185,13 @@ public class UserServiceImpl implements UserService {
 
     private boolean isNotBlank(String value) {
         return value != null && !value.trim().isEmpty();
+    }
+
+    private String normalizeOptionalText(String value) {
+        if (value == null) {
+            return null;
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
 }

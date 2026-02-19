@@ -1,10 +1,12 @@
 package com.artnest.dto;
 
 
+import com.artnest.enums.Gender;
 import lombok.*;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Getter
@@ -36,5 +38,10 @@ public class UsersRegisterRequest {
             message = "Mobile number must be a valid 10-digit Indian number"
     )
     private String phone;
+
+    private String address;
+
+    @NotNull(message = "Gender is required")
+    private Gender gender;
 }
 

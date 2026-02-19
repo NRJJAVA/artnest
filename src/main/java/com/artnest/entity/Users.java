@@ -1,6 +1,7 @@
 package com.artnest.entity;
 
 import com.artnest.enums.UserRole;
+import com.artnest.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,12 @@ public class Users extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String preferences;
+
+    @Column(columnDefinition = "TEXT")
+    private String address;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     private String profileImageUrl;
 
